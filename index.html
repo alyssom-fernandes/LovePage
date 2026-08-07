@@ -712,19 +712,19 @@
        ========================================================================== -->
     <script>
         /* ==========================================================================
-           CONFIGURAÇÕES PERSONALIZADAS
+           CONFIGURAÇÕES DOS ARQUIVOS E DATA
            ========================================================================== */
 
-        // 1. Cole a URL da FOTO DO CASAL aqui:
-        const COUPLE_PHOTO_URL = "https://ibb.co/9m5pmjqn";
+        // Nome do arquivo de foto que você subiu no GitHub:
+        const COUPLE_PHOTO_URL = "foto.jpg";
 
-        // 2. Cole a URL do ÁUDIO MP3 aqui:
-        const AUDIO_URL = "https://voca.ro/1lKJpkU8FAS9";
+        // Nome do arquivo MP3 que você subiu no GitHub:
+        const AUDIO_URL = "musica.mp3";
 
-        // 3. Data de início do namoro: 01/09/2023 (Setembro = mês 8 em JS)
+        // Data de início do namoro: 01/09/2023 (Setembro = mês 8 em JS)
         const RELATIONSHIP_START_DATE = new Date(2023, 8, 1, 0, 0, 0);
 
-        // 4. Letras limpas e sincronizadas "Na hora que você me chamar":
+        // Letras limpas e sincronizadas da música "Na hora que você me chamar":
         const LYRICS = [
             { time: 0, text: "Se não sou eu, quem vai ser?" },
             { time: 5, text: "Aconteça o que acontecer..." },
@@ -878,7 +878,7 @@
             });
         }
 
-        // Toque Duplo para Curtir
+        // Toque Duplo na Foto para Curtir
         let lastTap = 0;
         albumContainer.addEventListener('click', (e) => {
             const currentTime = new Date().getTime();
@@ -895,7 +895,7 @@
             createHeartExplosion(e);
         });
 
-        // Partículas SVG de Coração ao Curtir
+        // Partículas SVG de Coração
         function createHeartExplosion(e) {
             const x = e.clientX || window.innerWidth / 2;
             const y = e.clientY || window.innerHeight / 2;
@@ -920,7 +920,7 @@
             }
         }
 
-        // Contador de Relacionamento Preciso
+        // Contador de Relacionamento
         function updateCounter() {
             const now = new Date();
             let years = now.getFullYear() - RELATIONSHIP_START_DATE.getFullYear();
