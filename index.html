@@ -325,7 +325,7 @@
 
         .progress-bar::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 10px; height: 10px;
+            width: 100px; height: 10px;
             border-radius: 50%;
             background: var(--gold-primary);
             box-shadow: -400px 0 0 395px var(--gold-primary);
@@ -428,7 +428,7 @@
         }
 
         /* ==========================================================================
-           4. SEÇÃO DE LETRAS SINCRONIZADAS
+           4. SEÇÃO DE LETRAS (SEM TÍTULO REPETIDO)
            ========================================================================== */
         .lyrics-section {
             background: var(--glass-wine);
@@ -438,19 +438,6 @@
             border-radius: 20px;
             padding: 18px 16px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        }
-
-        .lyrics-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.82rem;
-            letter-spacing: 1.5px;
-            color: var(--gold-light);
-            margin-bottom: 14px;
-            text-transform: uppercase;
         }
 
         .lyrics-container {
@@ -677,16 +664,8 @@
             </div>
         </div>
 
-        <!-- 3. LETRAS SINCRONIZADAS -->
+        <!-- 3. LETRAS DA MÚSICA -->
         <div class="lyrics-section">
-            <div class="lyrics-header">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 18V5l12-2v13"></path>
-                    <circle cx="6" cy="18" r="3"></circle>
-                    <circle cx="18" cy="16" r="3"></circle>
-                </svg>
-                <span>Letras Sincronizadas</span>
-            </div>
             <div id="lyrics-container" class="lyrics-container">
                 <!-- Gerado via JS -->
             </div>
@@ -715,33 +694,34 @@
            CONFIGURAÇÕES DOS ARQUIVOS E DATA
            ========================================================================== */
 
-        // Nome do arquivo de foto que você subiu no GitHub:
         const COUPLE_PHOTO_URL = "foto.jpg";
-
-        // Nome do arquivo MP3 que você subiu no GitHub:
         const AUDIO_URL = "https://raw.githubusercontent.com/alyssom-fernandes/LovePage/main/musica.mp3";
-
-        // Data de início do namoro: 01/09/2023 (Setembro = mês 8 em JS)
         const RELATIONSHIP_START_DATE = new Date(2023, 8, 1, 0, 0, 0);
 
-        // Letras limpas e sincronizadas da música "Na hora que você me chamar":
+        // Timestamps 100% sincronizados com o seu áudio ao vivo/acústico:
         const LYRICS = [
             { time: 0, text: "Se não sou eu, quem vai ser?" },
-            { time: 5, text: "Aconteça o que acontecer..." },
-            { time: 10, text: "Eu não desisto de você jamais" },
-            { time: 16, text: "Tanto faz se o mundo desabar..." },
-            { time: 22, text: "Se for bom, um dia vai voltar... voltar pra mim" },
-            { time: 29, text: "Eu tenho um dicionário de defeitos" },
-            { time: 34, text: "Desculpe, amor, esse é meu jeito... esse é o jeito meu" },
-            { time: 41, text: "Sem pensar, me deixou aqui..." },
-            { time: 46, text: "Pra pensar no que te faz feliz, te faz sorrir" },
-            { time: 54, text: "Se não sou eu, quem vai ser?" },
-            { time: 59, text: "Se não sou eu, quem vai ser?" },
-            { time: 65, text: "E se você quiser, espero por você" },
-            { time: 70, text: "E se você ligar, eu corro pra atender" },
-            { time: 76, text: "À meia-noite ou quatro horas da manhã..." },
-            { time: 82, text: "Eu vou te encontrar..." },
-            { time: 87, text: "Na hora em que você me chamar" }
+            { time: 10, text: "Aconteça o que acontecer, eu não desisto de você jamais" },
+            { time: 18, text: "Tanto faz se o mundo desabar, se for bom um dia vai voltar, voltar pra mim" },
+            { time: 27, text: "Eu tenho um dicionário de defeitos, desculpe amor esse é meu jeito, esse é o jeito meu" },
+            { time: 36, text: "Sem pensar me deixou aqui, pra pensar no que te faz feliz, te faz sorrir" },
+            { time: 44, text: "Se não sou eu, quem vai ser?" },
+            { time: 53, text: "Se não sou eu, quem vai ser?" },
+            { time: 61, text: "E se você quiser espero por você, e se você ligar eu corro pra atender" },
+            { time: 71, text: "À meia-noite ou quatro horas da manhã, eu vou te encontrar..." },
+            { time: 78, text: "Na hora em que você chamar..." },
+            { time: 87, text: "Chamar..." },
+            { time: 105, text: "Eu tenho um dicionário de defeitos, desculpe amor esse é meu jeito, esse é o jeito meu" },
+            { time: 113, text: "Sem pensar me deixou aqui, pra pensar no que te faz feliz, te faz sorrir" },
+            { time: 121, text: "Se não sou eu, quem vai ser?" },
+            { time: 130, text: "Se não sou eu, quem vai ser?" },
+            { time: 138, text: "E se você quiser espero por você, e se você ligar eu corro pra atender" },
+            { time: 148, text: "À meia-noite ou quatro horas da manhã, eu vou te encontrar..." },
+            { time: 155, text: "Na hora em que você me chamar, eu vou..." },
+            { time: 164, text: "Na hora em que você me chamar, eu vou..." },
+            { time: 172, text: "Na hora em que você me chamar, eu vou, eu vou..." },
+            { time: 180, text: "Na hora em que você me chamar..." },
+            { time: 190, text: "Na hora em que você me chamar..." }
         ];
 
         /* ==========================================================================
@@ -878,7 +858,7 @@
             });
         }
 
-        // Toque Duplo na Foto para Curtir
+        // Toque Duplo na Foto
         let lastTap = 0;
         albumContainer.addEventListener('click', (e) => {
             const currentTime = new Date().getTime();
