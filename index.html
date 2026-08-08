@@ -8,7 +8,7 @@
     <!-- Google Fonts Luxury Kit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
         /* ==========================================================================
@@ -22,7 +22,7 @@
             --gold-primary: #d4af37;
             --gold-dark: #a37f19;
             --gold-gradient: linear-gradient(135deg, #fceabb 0%, #d4af37 50%, #9c7816 100%);
-            --glass-wine: rgba(30, 3, 10, 0.72);
+            --glass-wine: rgba(30, 3, 10, 0.75);
             --glass-border: rgba(212, 175, 55, 0.28);
         }
 
@@ -181,7 +181,7 @@
         }
 
         /* ==========================================================================
-           3. INTERFACE PRINCIPAL DO PLAYER (OTIMIZADA PARA TELA ÚNICA)
+           3. INTERFACE PRINCIPAL DO PLAYER (FOTO EXPANDIDA & ZERO SCROLL)
            ========================================================================== */
         .app-container {
             position: relative;
@@ -190,7 +190,7 @@
             max-width: 420px;
             height: 100dvh;
             max-height: 100dvh;
-            padding: 16px 18px 18px 18px;
+            padding: 18px 18px 20px 18px;
             display: flex;
             flex-direction: column;
             justify-content: space-between; /* Distribuição vertical perfeita */
@@ -204,18 +204,18 @@
             transform: translateY(0);
         }
 
-        /* Moldura Dupla da Foto (Tamanho Proporcional Inteligente) */
+        /* Moldura Dupla da Foto (Expandida para Maior Destaque) */
         .album-art-wrapper {
             position: relative;
-            width: clamp(160px, 23vh, 200px);
-            height: clamp(160px, 23vh, 200px);
+            width: clamp(200px, 30vh, 250px);
+            height: clamp(200px, 30vh, 250px);
             margin: 0 auto;
         }
 
         .album-frame-back {
             position: absolute;
-            inset: -6px;
-            border-radius: 22px;
+            inset: -7px;
+            border-radius: 24px;
             background: rgba(82, 9, 28, 0.35);
             border: 1px solid rgba(212, 175, 55, 0.25);
             backdrop-filter: blur(10px);
@@ -226,10 +226,10 @@
             position: relative;
             width: 100%;
             height: 100%;
-            border-radius: 18px;
+            border-radius: 20px;
             overflow: hidden;
             border: 1.5px solid rgba(212, 175, 55, 0.5);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(82, 9, 28, 0.6);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(82, 9, 28, 0.6);
             cursor: pointer;
         }
 
@@ -289,7 +289,7 @@
 
         .track-title {
             font-family: 'Cinzel', serif;
-            font-size: 1.15rem;
+            font-size: 1.22rem;
             font-weight: 700;
             letter-spacing: 0.5px;
         }
@@ -302,7 +302,36 @@
             letter-spacing: 0.5px;
         }
 
-        /* Controles de Áudio Compactos */
+        /* ==========================================================================
+           4. CARD DA FRASE ATUAL (DESTAQUE CENTRALIZADO E SEM CORTES)
+           ========================================================================== */
+        .single-lyric-box {
+            background: var(--glass-wine);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 16px;
+            padding: 10px 16px;
+            text-align: center;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .current-lyric-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+            line-height: 1.35;
+            word-break: break-word; /* Nunca corta o texto */
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        /* Controles de Áudio */
         .audio-controls {
             display: flex;
             flex-direction: column;
@@ -348,7 +377,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 8px;
+            padding: 0 10px;
         }
 
         .control-btn {
@@ -374,18 +403,18 @@
         }
 
         .btn-play-main {
-            width: 52px;
-            height: 52px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: radial-gradient(circle, #480718 0%, #1c0208 100%);
             border: 2px solid var(--gold-primary);
             color: var(--gold-primary);
-            box-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
+            box-shadow: 0 0 18px rgba(212, 175, 55, 0.35);
             opacity: 1;
         }
 
         .btn-like svg {
-            width: 20px; height: 20px;
+            width: 22px; height: 22px;
             fill: none;
             stroke: var(--gold-light);
             stroke-width: 2;
@@ -399,89 +428,8 @@
             filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
         }
 
-        /* Controle Deslizante de Volume */
-        .volume-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 0 30px;
-        }
-
-        .volume-icon {
-            color: rgba(248, 226, 154, 0.6);
-            display: flex;
-            align-items: center;
-        }
-
-        .volume-slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 3px;
-            border-radius: 2px;
-            background: rgba(212, 175, 55, 0.2);
-            outline: none;
-        }
-
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: var(--gold-primary);
-            cursor: pointer;
-        }
-
         /* ==========================================================================
-           4. SEÇÃO DE LETRAS COMPACTA (APPLE MUSIC STYLE)
-           ========================================================================== */
-        .lyrics-section {
-            background: var(--glass-wine);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 16px;
-            padding: 10px 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .lyrics-container {
-            max-height: 72px; /* Mostra ~2 frases focadas no centro */
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            text-align: center;
-            padding: 0 4px;
-            scroll-behavior: smooth;
-        }
-
-        .lyrics-container::-webkit-scrollbar { display: none; }
-
-        .lyric-line {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 0.98rem;
-            color: rgba(248, 226, 154, 0.4);
-            transition: all 0.35s ease;
-            font-style: italic;
-            cursor: pointer;
-            padding: 1px 0;
-            line-height: 1.3;
-        }
-
-        .lyric-line:hover { color: rgba(255, 255, 255, 0.85); }
-
-        .lyric-line.active {
-            color: #ffffff;
-            font-size: 1.08rem;
-            font-weight: 600;
-            font-style: normal;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
-            transform: scale(1.02);
-        }
-
-        /* ==========================================================================
-           5. CONTADOR DE RELACIONAMENTO (RODAPÉ COMPACTO)
+           5. CONTADOR DE RELACIONAMENTO (RODAPÉ INTEGRADO)
            ========================================================================== */
         .counter-pill {
             background: var(--glass-wine);
@@ -600,6 +548,11 @@
             <p class="track-subtitle">Jorge & Mateus • Você & Eu</p>
         </div>
 
+        <!-- Card da Frase Atual Centralizada -->
+        <div class="single-lyric-box">
+            <p id="current-lyric-text" class="current-lyric-text">Você & Eu • Para Sempre</p>
+        </div>
+
         <!-- Controles de Áudio -->
         <div class="audio-controls">
             <div class="progress-wrapper">
@@ -630,10 +583,10 @@
 
                 <!-- Play/Pause -->
                 <button id="btn-toggle-play" class="control-btn btn-play-main" aria-label="Tocar/Pausar">
-                    <svg id="icon-play" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <svg id="icon-play" viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
                         <path d="M8 5v14l11-7z"/>
                     </svg>
-                    <svg id="icon-pause" class="hidden" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <svg id="icon-pause" class="hidden" viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
                         <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
                     </svg>
                 </button>
@@ -652,32 +605,9 @@
                     </svg>
                 </button>
             </div>
-
-            <!-- Volume -->
-            <div class="volume-container">
-                <span class="volume-icon">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                    </svg>
-                </span>
-                <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.05" value="1">
-                <span class="volume-icon">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                    </svg>
-                </span>
-            </div>
         </div>
 
-        <!-- 3. LETRAS DA MÚSICA -->
-        <div class="lyrics-section">
-            <div id="lyrics-container" class="lyrics-container">
-                <!-- Gerado via JS -->
-            </div>
-        </div>
-
-        <!-- 4. CONTADOR DE RELACIONAMENTO -->
+        <!-- 5. CONTADOR DE RELACIONAMENTO -->
         <div class="counter-pill">
             <div class="counter-header">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -704,7 +634,7 @@
         const AUDIO_URL = "https://raw.githubusercontent.com/alyssom-fernandes/LovePage/main/musica.mp3";
         const RELATIONSHIP_START_DATE = new Date(2023, 8, 1, 0, 0, 0);
 
-        // Timestamps 100% sincronizados com o seu áudio ao vivo/acústico:
+        // Timestamps sincronizados com o seu áudio ao vivo/acústico:
         const LYRICS = [
             { time: 0, text: "Se não sou eu, quem vai ser?" },
             { time: 10, text: "Aconteça o que acontecer, eu não desisto de você jamais" },
@@ -752,26 +682,10 @@
         const btnNext = document.getElementById('btn-next');
         const btnRepeat = document.getElementById('btn-repeat');
         const btnLike = document.getElementById('btn-like');
-        const volumeSlider = document.getElementById('volume-slider');
-        const lyricsContainer = document.getElementById('lyrics-container');
+        const currentLyricText = document.getElementById('current-lyric-text');
 
         albumArt.src = COUPLE_PHOTO_URL;
         audioPlayer.src = AUDIO_URL;
-
-        // Renderiza as Letras Interativas (Click-to-Seek)
-        LYRICS.forEach((lyric) => {
-            const p = document.createElement('p');
-            p.classList.add('lyric-line');
-            p.textContent = lyric.text;
-            p.addEventListener('click', () => {
-                audioPlayer.currentTime = lyric.time;
-                if (audioPlayer.paused) {
-                    audioPlayer.play();
-                    updatePlayState(true);
-                }
-            });
-            lyricsContainer.appendChild(p);
-        });
 
         // Clique no Botão Principal
         btnStart.addEventListener('click', () => {
@@ -823,11 +737,6 @@
             audioPlayer.currentTime = (progressBar.value / 100) * audioPlayer.duration;
         });
 
-        // Volume
-        volumeSlider.addEventListener('input', (e) => {
-            audioPlayer.volume = e.target.value;
-        });
-
         // Repetir
         btnRepeat.addEventListener('click', () => {
             audioPlayer.loop = !audioPlayer.loop;
@@ -843,25 +752,29 @@
             return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        // Sincronizador de Letras
+        // Exibição Dinâmica da Frase Atual
+        let lastLyricIndex = -1;
         function syncLyrics(currentTime) {
-            const lines = document.querySelectorAll('.lyric-line');
             let activeIndex = -1;
 
             for (let i = 0; i < LYRICS.length; i++) {
                 if (currentTime >= LYRICS[i].time) activeIndex = i;
             }
 
-            lines.forEach((line, idx) => {
-                if (idx === activeIndex) {
-                    if (!line.classList.contains('active')) {
-                        line.classList.add('active');
-                        line.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
+            if (activeIndex !== lastLyricIndex) {
+                lastLyricIndex = activeIndex;
+                if (activeIndex !== -1) {
+                    currentLyricText.style.opacity = '0';
+                    currentLyricText.style.transform = 'translateY(4px)';
+                    setTimeout(() => {
+                        currentLyricText.textContent = LYRICS[activeIndex].text;
+                        currentLyricText.style.opacity = '1';
+                        currentLyricText.style.transform = 'translateY(0)';
+                    }, 180);
                 } else {
-                    line.classList.remove('active');
+                    currentLyricText.textContent = "Você & Eu • Para Sempre";
                 }
-            });
+            }
         }
 
         // Toque Duplo na Foto
