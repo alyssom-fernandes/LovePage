@@ -732,4 +732,259 @@
 
         /* ==========================================================================
            CONTROLE DE INTERATIVIDADE E ÁUDIO
-           =========================================
+           ========================================================================== */
+
+        const splashScreen = document.getElementById('splash-screen');
+        const btnStart = document.getElementById('btn-start');
+        const appContainer = document.getElementById('app-container');
+        const audioPlayer = document.getElementById('audio-player');
+        const albumArt = document.getElementById('album-art');
+        const albumContainer = document.getElementById('album-container');
+        const equalizer = document.getElementById('equalizer');
+
+        const btnTogglePlay = document.getElementById('btn-toggle-play');
+        const iconPlay = document.getElementById('icon-play');
+        const iconPause = document.getElementById('icon-pause');
+        const progressBar = document.getElementById('progress-bar');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationTimeEl = document.getElementById('duration-time');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnRepeat = document.getElementById('btn-repeat');
+        const btnLike = document.getElementById('btn-like');
+        const volumeSlider = document.getElementById('volume-slider');
+        const lyricsContainer = document.getElementById('lyrics-container');
+
+        albumArt.src = COUPLE_PHOTO_URL;
+        audioPlayer.src = AUDIO_URL;
+
+        // Renderiza as Letras Interativas (Click-to-Seek)
+        LYRICS.forEach((lyric) => {
+            const p = document.createElement('p');
+            p.classList.add('lyric-line');
+            p.textContent = lyric.text;
+            p.addEventListener('click', () => {
+                audioPlayer.currentTime = lyric.time;
+                if (audioPlayer.paused) {
+                    audioPlayer.play();
+                    updatePlayState(true);
+                }
+            });
+            lyricsContainer.appendChild(p);
+        });
+
+        // Clique no Botão Principal
+        btnStart.addEventListener('click', () => {
+            audioPlayer.play().then(() => {
+                updatePlayState(true);
+            }).catch(err => console.log("Aguardando ação...", err));
+
+            splashScreen.classList.add('fade-out');
+            appContainer.classList.add('show');
+        });
+
+        function updatePlayState(isPlaying) {
+            if (isPlaying) {
+                iconPlay.classList.add('hidden');
+                iconPause.classList.remove('hidden');
+                albumContainer.classList.add('playing');
+                equalizer.classList.add('playing');
+            } else {
+                iconPlay.classList.remove('hidden');
+                iconPause.classList.add('hidden');
+                albumContainer.classList.remove('playing');
+                equalizer.classList.remove('playing');
+            }
+        }
+
+        btnTogglePlay.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                updatePlayState(true);
+            } else {
+                audioPlayer.pause();
+                updatePlayState(false);
+            }
+        });
+
+        // Atualizador de Progresso
+        audioPlayer.addEventListener('timeupdate', () => {
+            if (!audioPlayer.duration) return;
+            const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progressBar.value = progress;
+
+            currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+            durationTimeEl.textContent = formatTime(audioPlayer.duration);
+
+            syncLyrics(audioPlayer.currentTime);
+        });
+
+        progressBar.addEventListener('input', () => {
+            audioPlayer.currentTime = (progressBar.value / 100) * audioPlayer.duration;
+        });
+
+        // Volume
+        volumeSlider.addEventListener('input', (e) => {
+            audioPlayer.volume = e.target.value;
+        });
+
+        // Repetir
+        btnRepeat.addEventListener('click', () => {
+            audioPlayer.loop = !audioPlayer.loop;
+            btnRepeat.classList.toggle('active-repeat', audioPlayer.loop);
+        });
+
+        btnPrev.addEventListener('click', () => { audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5); });
+        btnNext.addEventListener('click', () => { audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 5); });
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Sincronizador de Letras
+        function syncLyrics(currentTime) {
+            const lines = document.querySelectorAll('.lyric-line');
+            let activeIndex = -1;
+
+            for (let i = 0; i < LYRICS.length; i++) {
+                if (currentTime >= LYRICS[i].time) activeIndex = i;
+            }
+
+            lines.forEach((line, idx) => {
+                if (idx === activeIndex) {
+                    if (!line.classList.contains('active')) {
+                        line.classList.add('active');
+                        line.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                } else {
+                    line.classList.remove('active');
+                }
+            });
+        }
+
+        // Toque Duplo na Foto
+        let lastTap = 0;
+        albumContainer.addEventListener('click', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 350 && tapLength > 0) {
+                btnLike.classList.add('liked');
+                createHeartExplosion(e);
+            }
+            lastTap = currentTime;
+        });
+
+        btnLike.addEventListener('click', (e) => {
+            btnLike.classList.toggle('liked');
+            createHeartExplosion(e);
+        });
+
+        // Partículas SVG de Coração
+        function createHeartExplosion(e) {
+            const x = e.clientX || window.innerWidth / 2;
+            const y = e.clientY || window.innerHeight / 2;
+
+            for (let i = 0; i < 14; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-burst-particle');
+                heart.innerHTML = `<svg viewBox="0 0 24 24" fill="#d4af37" width="18" height="18"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+                document.body.appendChild(heart);
+
+                const angle = (i / 14) * Math.PI * 2;
+                const velocity = 45 + Math.random() * 55;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity - 20;
+
+                heart.style.left = `${x}px`;
+                heart.style.top = `${y}px`;
+                heart.style.setProperty('--tx', `${tx}px`);
+                heart.style.setProperty('--ty', `${ty}px`);
+
+                setTimeout(() => heart.remove(), 1000);
+            }
+        }
+
+        // Contador de Relacionamento
+        function updateCounter() {
+            const now = new Date();
+            let years = now.getFullYear() - RELATIONSHIP_START_DATE.getFullYear();
+            let months = now.getMonth() - RELATIONSHIP_START_DATE.getMonth();
+            let days = now.getDate() - RELATIONSHIP_START_DATE.getDate();
+            let hours = now.getHours() - RELATIONSHIP_START_DATE.getHours();
+            let minutes = now.getMinutes() - RELATIONSHIP_START_DATE.getMinutes();
+            let seconds = now.getSeconds() - RELATIONSHIP_START_DATE.getSeconds();
+
+            if (seconds < 0) { seconds += 60; minutes--; }
+            if (minutes < 0) { minutes += 60; hours--; }
+            if (hours < 0) { hours += 24; days--; }
+            if (days < 0) {
+                const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += prevMonth.getDate();
+                months--;
+            }
+            if (months < 0) { months += 12; years--; }
+
+            document.getElementById('counter-main').textContent = 
+                `${years} ANOS • ${months} MESES • ${days} DIAS`;
+            
+            document.getElementById('counter-sub').textContent = 
+                `${hours < 10 ? '0' + hours : hours} HORAS • ${minutes < 10 ? '0' + minutes : minutes} MIN • ${seconds < 10 ? '0' + seconds : seconds} SEG`;
+        }
+
+        setInterval(updateCounter, 1000);
+        updateCounter();
+
+        // Canvas de Corações Vetoriais
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class VectorParticle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = height + 20;
+                this.size = Math.random() * 7 + 4;
+                this.speedY = Math.random() * 0.7 + 0.3;
+                this.opacity = Math.random() * 0.35 + 0.1;
+                this.color = Math.random() > 0.4 ? '#d4af37' : '#52091c';
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += Math.sin(this.y * 0.005) * 0.4;
+                if (this.y < -20) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                const x = this.x, y = this.y, s = this.size;
+                ctx.moveTo(x, y);
+                ctx.bezierCurveTo(x - s/2, y - s/2, x - s, y + s/3, x, y + s);
+                ctx.bezierCurveTo(x + s, y + s/3, x + s/2, y - s/2, x, y);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 22; i++) particles.push(new VectorParticle());
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+    </script>
+</body>
+</html>
